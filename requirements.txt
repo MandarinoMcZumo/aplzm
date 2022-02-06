@@ -1,0 +1,11 @@
+mariadb==1.0.9
+Flask==2.0.2
+Flask-RESTful==0.3.9
+flask-talisman==0.8.1
+pytest==7.0.0
+pytest-flask==1.2.0
+numpy
+scipy
+pandas==1.4.0
+scikit-learn
+gunicorn==19.9.0
