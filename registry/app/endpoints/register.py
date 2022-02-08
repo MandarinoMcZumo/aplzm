@@ -2,7 +2,7 @@ import datetime
 
 from flask_restful import Resource
 from flask_restful import request
-from registry.database.db_connection import connect_db
+import registry.database.db_connection as db_conn
 import registry.utils.classes as c
 import json
 
@@ -12,7 +12,7 @@ class ClientPredictions(Resource):
         conn = None
         cursor = None
         try:
-            conn = connect_db()
+            conn = db_conn.connect_db()
             cursor = conn.cursor()
             cursor.execute(f"""
             SELECT 
@@ -22,7 +22,6 @@ class ClientPredictions(Resource):
             WHERE client_id = '{user_id}'
             ORDER BY registered_at DESC
             """)
-
             result = []
             for row in cursor:
                 row = list(map(lambda x: str(x) if type(x) == datetime.datetime else x, row))
@@ -31,7 +30,7 @@ class ClientPredictions(Resource):
             return {"records": result}
 
         except Exception as e:
-            raise c.RegisterException(e)
+            c.exception_handler(e)
 
         finally:
             if cursor is not None:
@@ -46,7 +45,7 @@ class ClientPredictions(Resource):
         r = c.NewRecord(payload)
 
         try:
-            conn = connect_db()
+            conn = db_conn.connect_db()
             conn.autocommit = True
             cursor = conn.cursor()
             cursor.execute(f"""
@@ -71,7 +70,7 @@ class ClientPredictions(Resource):
             return {"success": True}
 
         except Exception as e:
-            print(str(e))
+            c.exception_handler(e)
 
         finally:
             if cursor is not None:

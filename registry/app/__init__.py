@@ -1,5 +1,6 @@
 from registry.log.log_console import logger
 import registry.app.endpoints.register as rgs
+import registry.utils.functions as f
 
 from flask import Flask
 from flask_restful import Api
@@ -21,7 +22,7 @@ def create_app():
     app = Flask(__name__)
     Talisman(app, force_https=False)
     api = Api(app)
-
+    f.initialize_db()
     api.add_resource(rgs.ClientPredictions, '/asnef/register/<string:user_id>')
     return app
 

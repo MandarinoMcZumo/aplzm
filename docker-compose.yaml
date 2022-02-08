@@ -32,6 +32,8 @@ services:
     build:
       context: ./registry
     restart: always
+    depends_on:
+      - mariadb
     ports:
       - "5002:5002"
     links:

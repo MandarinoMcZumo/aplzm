@@ -1,39 +1,30 @@
-import re
+import registry.database.db_connection as db_conn
+import registry.utils.classes as c
 
 
-def string_validation(s, rgx, exc):
-    """
-
-    :param str s:
-    :param str rgx:
-    :return:
-    """
+def initialize_db():
+    conn = None
+    cursor = None
     try:
-        type_check = type(s) == str
-        value_check = re.search(rgx, s)
-
-        if not type_check or value_check is None:
-            raise exc("Invalid mark value.")
+        conn = db_conn.connect_db()
+        cursor = conn.cursor()
+        conn.autocommit = True
+        cursor.execute('CREATE DATABASE IF NOT EXISTS apzm;')
+        cursor.execute('CREATE SCHEMA IF NOT EXISTS historic;')
+        cursor.execute("""CREATE TABLE IF NOT EXISTS historic.ratings (
+id VARCHAR(70) DEFAULT UUID(), 
+registered_at DATETIME,
+asnef_score INT,
+client_id VARCHAR(50),
+experian_score SMALLINT,
+experian_score_probability_default FLOAT,
+experian_score_percentile TINYINT,
+experian_mark VARCHAR(10));""")
     except Exception as e:
-        raise exc(e)
+        raise c.DBException("The DB could not be initialized - " + str(e))
 
-
-def numeric_validation(num_value, param_type, param_range, exc):
-    """
-
-    :param num_value:
-    :param class param_type:
-    :param list param_range:
-    :param  exc:
-    :return: 
-    """
-    try:
-        check_param_type = type(num_value) == param_type
-        check_param_value = min(param_range) <= num_value <= max(param_range)
-
-        if not check_param_type or not check_param_value:
-            raise exc("Invalid value.")
-
-    except Exception as e:
-        raise exc(e)
-
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()

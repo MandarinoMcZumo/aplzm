@@ -5,7 +5,6 @@ import predict.config.app_config as config
 import predict.utils.classes as c
 import joblib
 import pandas as pd
-import os
 
 
 class Asnef(Resource):
@@ -21,7 +20,4 @@ class Asnef(Resource):
             return {"prediction": r_pred}
 
         except Exception as e:
-            print(str(e))
-            logger.error(str(e))
-            logger.info(os.getcwd())
-            return c.PredictException(e)
+            return c.exception_handler(e)
