@@ -66,7 +66,8 @@ ___
 
 ___
 ### Design overview
-The service is built from 4 different Docker Images:
+![Diagram](resources/pics/diagram.png)  
+  The service is built from 4 different Docker Images:
 - [Maria DB](db) database
 - 3 Flask Services:
   - [Base API](base) - Used as an interface that checks, validates and routes the requests
