@@ -15,7 +15,7 @@ def create_app():
     """
 
     # Only to debug
-    logger.debug('Starting v1 API ... ')
+    logger.debug('Starting v1 Predict API ... ')
 
     # instantiate the base
     app = Flask(__name__)

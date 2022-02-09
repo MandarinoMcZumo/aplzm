@@ -1,9 +1,4 @@
-import json
 from flask_restful import abort
-import pandas as pd
-
-import registry.utils.functions as f
-
 
 class NewRecord:
     def __init__(self, payload):

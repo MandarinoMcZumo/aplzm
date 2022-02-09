@@ -10,5 +10,4 @@ RUN pip install --no-cache-dir -r predict/requirements.txt
 COPY . /usr/src/aplzm/predict
 ENV PYTHONPATH /usr/src
 
-EXPOSE 5001
 CMD ["gunicorn","--workers=5","-b", "0.0.0.0:5001", "predict.app:app"]
