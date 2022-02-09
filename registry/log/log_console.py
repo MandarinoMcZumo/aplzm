@@ -5,7 +5,7 @@ from registry.config import app_config as config
 # Logging attributes to show in console the API´s Log
 
 # create logger
-logger = logging.getLogger('data-foundation-api')
+logger = logging.getLogger('registry-api')
 logger.setLevel(config.LOG_LEVEL_CONSOLE)
 
 # create console handler and set level to debug

@@ -11,5 +11,4 @@ RUN pip install --no-cache-dir -r registry/requirements.txt
 COPY . /usr/src/aplzm/registry
 ENV PYTHONPATH /usr/src/aplzm
 
-EXPOSE 5002
 CMD ["gunicorn","--workers=5","-b", "0.0.0.0:5002", "registry.app:app"]

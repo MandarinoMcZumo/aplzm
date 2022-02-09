@@ -2,9 +2,13 @@ import json
 import pandas as pd
 from flask_restful import abort
 import base.utils.functions as f
+from base.log.log_console import logger
 
 
 class Client:
+    """
+    Base Asnef client class
+    """
     def __init__(self, client_id, payload):
         self.__id__ = client_id
         self.__experian_score__ = payload['experian-score']
@@ -16,7 +20,7 @@ class Client:
         self.predict_payload = None
 
     def validate_attrs(self):
-        f.numeric_validation(self.__experian_score__, int, [0, 200], ExpScoreException)
+        f.numeric_validation(self.__experian_score__, int, [0, 2000], ExpScoreException)
         f.numeric_validation(self.__experian_score_probability_default__, float, [0, 1], ExpScoreProbabilityException)
         f.numeric_validation(self.__experian_score_percentile__, float, [0, 100], ExpPercentileException)
         f.string_validation(self.__id__, '^[0-9]{8,8}[A-Za-z]$', ClientIdException)
@@ -67,10 +71,6 @@ class ExpPercentileException(ApzmException):
     pass
 
 
-class PredictException(ApzmException):
-    pass
-
-
 class ClientIdException(ApzmException):
     pass
 
@@ -92,9 +92,6 @@ def exception_handler(exc):
     elif isinstance(exc, ExpPercentileException):
         err_code = "ERR904"
         description = "Parameter Experian Percentile - " + str(exc.__error__)
-    elif isinstance(exc, PredictException):
-        err_code = "ERR905"
-        description = "Something went wrong applying the prediction - " + str(exc.__error__)
     elif isinstance(exc, ClientIdException):
         err_code = "ERR906"
         description = "Paramter ID - " + str(exc.__error__)
@@ -102,4 +99,5 @@ def exception_handler(exc):
         err_code = "ERR999"
         description = "Something went wrong - " + str(exc)
 
+    logger.error(f"ERROR CODE: {err_code} - ERROR DESCRIPTION: {description}")
     return abort(403, success=False, message=err_code, description=description)

@@ -8,6 +8,7 @@ def string_validation(s, rgx, exc):
 
     :param str s:
     :param str rgx:
+    :param ApzmException exc:
     :return:
     """
     try:
@@ -24,9 +25,9 @@ def numeric_validation(num_value, param_type, param_range, exc):
     """
 
     :param num_value:
-    :param class param_type:
+    :param param_type:
     :param list param_range:
-    :param  exc:
+    :param ApzmException exc:
     :return: 
     """
     try:
@@ -43,9 +44,8 @@ def numeric_validation(num_value, param_type, param_range, exc):
 def request_prediction(endpoint, df):
     """
 
-    :param url:
+    :param str endpoint:
     :param pd.Dataframe df:
-    :return:
     """
     headers = {"Content-Type": "application/json"}
     payload = json.dumps({"data": df.to_json()})
@@ -60,10 +60,7 @@ def request_prediction(endpoint, df):
 def request_registry(endpoint):
     """
 
-    :param url:
-    :param client_id:
-    :param pd.Dataframe df:
-    :return:
+    :param str endpoint:
     """
 
     response = requests.request('get', endpoint)
@@ -77,9 +74,8 @@ def request_registry(endpoint):
 def request_new_record(endpoint, data):
     """
 
-    :param url:
-    :param client_id:
-    :param pd.Dataframe df:
+    :param endpoint:
+    :param Client data:
     :return:
     """
     headers = {"Content-Type": "application/json"}

@@ -1,8 +1,4 @@
-import json
 from flask_restful import abort
-import pandas as pd
-
-import predict.utils.functions as f
 
 
 class ApzmException(Exception):
@@ -14,6 +10,7 @@ class ApzmException(Exception):
 
 class PredictException(ApzmException):
     pass
+
 
 def exception_handler(exc):
     if isinstance(exc, PredictException):

@@ -4,6 +4,8 @@ from flask_restful import Resource
 from flask_restful import request
 import registry.database.db_connection as db_conn
 import registry.utils.classes as c
+import registry.utils.functions as f
+from registry.log.log_console import logger
 import json
 
 
@@ -12,6 +14,8 @@ class ClientPredictions(Resource):
         conn = None
         cursor = None
         try:
+            logger.info(f"Getting records for user {user_id}")
+            f.initialize_db()
             conn = db_conn.connect_db()
             cursor = conn.cursor()
             cursor.execute(f"""
@@ -27,6 +31,7 @@ class ClientPredictions(Resource):
                 row = list(map(lambda x: str(x) if type(x) == datetime.datetime else x, row))
                 result.append((dict(zip(['registered_at', 'asnef_score'], row))))
 
+            logger.info(f"Records user {user_id} - SUCCESS")
             return {"records": result}
 
         except Exception as e:
@@ -45,6 +50,8 @@ class ClientPredictions(Resource):
         r = c.NewRecord(payload)
 
         try:
+            logger.info(f"New registry request for user {user_id}")
+            f.initialize_db()
             conn = db_conn.connect_db()
             conn.autocommit = True
             cursor = conn.cursor()
@@ -66,7 +73,7 @@ class ClientPredictions(Resource):
             , '{r.experian_mark}'
             )
             """)
-
+            logger.info(f"New record for user {user_id} - SUCCESS")
             return {"success": True}
 
         except Exception as e:

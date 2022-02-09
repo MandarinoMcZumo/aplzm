@@ -3,6 +3,7 @@ import registry.utils.classes as c
 
 
 def initialize_db():
+    """Checks if the needed Database, Schema and table already exists in the server"""
     conn = None
     cursor = None
     try:

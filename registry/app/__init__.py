@@ -16,13 +16,12 @@ def create_app():
     """
 
     # Only to debug
-    logger.debug('Starting v1 API ... ')
+    logger.debug('Starting v1 Registry API ... ')
 
     # instantiate the base
     app = Flask(__name__)
     Talisman(app, force_https=False)
     api = Api(app)
-    f.initialize_db()
     api.add_resource(rgs.ClientPredictions, '/asnef/register/<string:user_id>')
     return app
 
